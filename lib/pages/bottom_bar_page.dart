@@ -18,19 +18,19 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
   final List<Map<String, dynamic>> _page = [
     {
       'page': const MyHomePage(),
-      'title': 'Home Screen',
+      'title': 'Home',
     },
     {
       'page': const MyCategoriesPage(),
-      'title': 'Categories Screen',
+      'title': 'Categories',
     },
     {
       'page': const MyCartPage(),
-      'title': 'Cart Screen',
+      'title': 'Cart',
     },
     {
       'page': const MyUserPage(),
-      'title': 'User Screen',
+      'title': 'Hi, Customer',
     },
   ];
 
