@@ -14,6 +14,7 @@ class Styles {
             secondary: isDarkTheme ? const Color(0xFF1a1f3c) : Colors.white,
             onSurface: isDarkTheme ? Colors.white : const Color(0xFF00001a),
             brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+            inversePrimary: isDarkTheme ? Colors.indigo.shade300 : Colors.indigo.shade700,
           ),
       cardColor: isDarkTheme ? const Color(0xFF0a0d2c) : Colors.white,
       canvasColor: isDarkTheme ? Colors.black : Colors.white,
