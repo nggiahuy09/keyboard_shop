@@ -18,19 +18,19 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
   final List<Map<String, dynamic>> _page = [
     {
       'page': const MyHomePage(),
-      'title': 'Home',
+      // 'title': 'Home',
     },
     {
       'page': const MyCategoriesPage(),
-      'title': 'Categories',
+      // 'title': 'Categories',
     },
     {
       'page': const MyCartPage(),
-      'title': 'Cart',
+      // 'title': 'Cart',
     },
     {
       'page': const MyUserPage(),
-      'title': 'Hi, Customer',
+      // 'title': 'Hi, Customer',
     },
   ];
 
@@ -43,9 +43,9 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_page[_selectedIndex]['title']),
-      ),
+      // appBar: AppBar(
+      //   title: Text(_page[_selectedIndex]['title']),
+      // ),
       body: _page[_selectedIndex]['page'],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
