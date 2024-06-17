@@ -14,6 +14,9 @@ class MyCategoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Categories'),
+      ),
       body: ListView.builder(
         itemCount: category.length,
         itemBuilder: (BuildContext context, int index) {
