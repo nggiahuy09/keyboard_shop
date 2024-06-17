@@ -14,11 +14,11 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Container(
             width: 250,
             height: 250,
             decoration: BoxDecoration(
@@ -44,8 +44,8 @@ class CategoryWidget extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
