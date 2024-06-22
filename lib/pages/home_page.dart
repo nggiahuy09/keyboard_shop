@@ -1,8 +1,8 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:keyboard_shop/pages/view_all_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
-import 'package:keyboard_shop/widgets/on_sale_widget.dart';
+import 'package:keyboard_shop/widgets/product_item_widget.dart';
 
 final List<String> cardSwiper = [
   'assets/images/card_swiper_1.jpg',
@@ -46,18 +46,27 @@ class MyHomePage extends StatelessWidget {
             sectionWidget(
               context,
               title: 'For You',
-              viewAlls: () {},
+              viewAll: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const ViewAllPage(title: 'For You'),
+                  ),
+                );
+              },
             ),
+            const SizedBox(height: 4),
             Container(
-              padding: const EdgeInsets.only(left: 4),
+              padding: const EdgeInsets.only(left: 8),
               height: screenSize.height * 0.34,
               child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: 3,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: OnSaleWidget(),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: ProductItemWidget(),
                   );
                 },
               ),
@@ -66,7 +75,31 @@ class MyHomePage extends StatelessWidget {
             sectionWidget(
               context,
               title: 'Our Gears',
-              viewAlls: () {},
+              viewAll: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                    const ViewAllPage(title: 'Our Gears'),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 4),
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: screenSize.width / (screenSize.height * 0.78),
+              children: List.generate(
+                4,
+                (index) {
+                  return const ProductItemWidget();
+                },
+              ),
             ),
           ],
         ),
@@ -77,7 +110,7 @@ class MyHomePage extends StatelessWidget {
   Widget sectionWidget(
     BuildContext context, {
     required String title,
-    required Function() viewAlls,
+    required Function() viewAll,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -92,9 +125,9 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: viewAlls,
+            onTap: viewAll,
             child: Text(
-              'View alls',
+              'View all',
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.inversePrimary,
