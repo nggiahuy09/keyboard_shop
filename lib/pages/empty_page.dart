@@ -16,6 +16,7 @@ class EmptyPage extends StatelessWidget {
         Image.asset('assets/images/empty_box.jpeg'),
         Text(
           description,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 20,
