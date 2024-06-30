@@ -105,16 +105,17 @@ class _MyUserPageState extends State<MyUserPage> {
                 child: const Text(
                   'Cancel',
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Colors.indigo,
                   ),
                 ),
               ),
               TextButton(
                 onPressed: () {},
                 child: const Text(
-                  'OK',
+                  'Log Out',
                   style: TextStyle(
-                    color: Colors.indigo,
+                    color: Colors.red,
+
                   ),
                 ),
               ),
