@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/widgets/cart_widget.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 
 List<CartWidget> myCart = [
   const CartWidget(),
@@ -33,59 +35,90 @@ class _MyCartPageState extends State<MyCartPage> {
               Icons.delete,
               size: 26,
             ),
-            onPressed: () {
-              if(myCart.isNotEmpty) {
-                setState(() {
-                  myCart.clear();
-                });
-              }
-            },
+            onPressed: _clearCart,
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total: ......',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-                MaterialButton(
-                  height: 40,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+      /**/
+      body: myCart.isEmpty
+          ? const EmptyPage(description: 'Your Cart is Empty!!!\nGo Shopping Now')
+          : Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Total: ......',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      CusMaterialButton(
+                        content: 'Check Out',
+                        minWidth: 100,
+                        fontSizeContent: 18,
+                        onTap: () {},
+                      ),
+                    ],
                   ),
-                  color: Colors.indigo,
-                  onPressed: () {},
-                  child: Text(
-                    'Check Out',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.background,
+                  const SizedBox(height: 8),
+                  Flexible(
+                    child: ListView.builder(
+                      itemCount: myCart.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: myCart[index],
+                        );
+                      },
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Flexible(
-              child: ListView.builder(
-                itemCount: myCart.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: myCart[index],
-                  );
-                },
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
+  }
+
+  Future<void> _clearCart() async {
+    if (myCart.isNotEmpty) {
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Confirmation'),
+            content: const Text('Do you want to clear your cart'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    myCart.clear();
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Clear',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
