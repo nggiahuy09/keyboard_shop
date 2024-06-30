@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
@@ -11,11 +13,12 @@ class MyUserPage extends StatefulWidget {
 }
 
 class _MyUserPageState extends State<MyUserPage> {
+  String userAddress = 'My Address 2';
+
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<ThemeProvider>(context);
     TextEditingController addressController = TextEditingController();
-    String userAddress = 'My Address 2';
 
     @override
     void dispose() {
@@ -38,8 +41,9 @@ class _MyUserPageState extends State<MyUserPage> {
                 onPressed: () {
                   setState(() {
                     userAddress = addressController.text.trim();
-                    Navigator.of(context).pop();
+                    log(userAddress);
                   });
+                  Navigator.of(context).pop();
                 },
                 child: const Text('Update'),
               ),
