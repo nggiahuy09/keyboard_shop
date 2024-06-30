@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 
 class ProductItemWidget extends StatefulWidget {
@@ -22,7 +23,11 @@ class _ProductItemWidget extends State<ProductItemWidget> {
       width: size.width * 0.42,
       height: 200,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return const ProductDetailsPage();
+          }));
+        },
         child: Container(
           decoration: const BoxDecoration(
             border: Border(
