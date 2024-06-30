@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
 
 class CartWidget extends StatefulWidget {
   const CartWidget({super.key});
@@ -53,36 +54,10 @@ class _CartWidgetState extends State<CartWidget> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (quantity > 1) {
-                                quantity--;
-                              }
-                            });
-                          },
-                          icon: const Icon(Icons.remove),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          quantity < 10 ? '0$quantity' : '$quantity',
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.indigo),
-                        ),
-                        const SizedBox(width: 4),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              quantity++;
-                            });
-                          },
-                          icon: const Icon(Icons.add),
-                        ),
-                      ],
+                    CusQuantityWidget(
+                      quantity: quantity,
+                      decrement: decrement,
+                      increment: increment,
                     ),
                     const Spacer(),
                     GestureDetector(
@@ -109,5 +84,19 @@ class _CartWidgetState extends State<CartWidget> {
         ],
       ),
     );
+  }
+
+  void increment() {
+    setState(() {
+      quantity++;
+    });
+  }
+
+  void decrement() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+      });
+    }
   }
 }
