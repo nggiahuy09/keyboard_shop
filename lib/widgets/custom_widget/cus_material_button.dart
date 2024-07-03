@@ -101,3 +101,37 @@ class CusMaterialButtonAccent extends StatelessWidget {
     );
   }
 }
+
+class CusMaterialIconButton extends StatelessWidget {
+  const CusMaterialIconButton({
+    super.key,
+    required this.icon,
+    required this.onTap,
+    required this.color,
+    this.width,
+    this.height,
+  });
+
+  final IconData icon;
+  final Function() onTap;
+  final Color color;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      minWidth: width,
+      height: height,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: color,
+      onPressed: onTap,
+      child: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.background,
+      ),
+    );
+  }
+}
