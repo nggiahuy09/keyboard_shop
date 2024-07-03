@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/consts/empty_screen_data.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/widgets/cart_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
@@ -41,7 +42,10 @@ class _MyCartPageState extends State<MyCartPage> {
         ],
       ),
       body: myCart.isEmpty
-          ? const EmptyPage(description: 'Your Cart is Empty!!!\nGo Shopping Now')
+          ? const EmptyPage(
+              type: ConstEmptyPage.CART,
+              description: 'Your Cart is Empty!!!\nGo Shopping Now',
+            )
           : Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),

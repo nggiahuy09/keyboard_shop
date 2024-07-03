@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/consts/empty_screen_data.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:keyboard_shop/widgets/wishlist_widget.dart';
@@ -47,6 +48,7 @@ class _WishlistPageState extends State<WishlistPage> {
       ),
       body: _myWishlist.isEmpty
           ? const EmptyPage(
+              type: ConstEmptyPage.CART,
               description: 'Your Wishlist Is Empty!!!\nVisit Our Store Now',
             )
           : ListView.builder(
