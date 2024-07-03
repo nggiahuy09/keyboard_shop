@@ -17,8 +17,18 @@ class CusConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title),
-      content: Text(content),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
+      ),
+      content: Text(
+        content,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
+      ),
       actions: [
         denyOption,
         acceptOption,
