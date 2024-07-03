@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/widgets/cart_widget.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 
 List<CartWidget> myCart = [
@@ -39,7 +40,6 @@ class _MyCartPageState extends State<MyCartPage> {
           )
         ],
       ),
-      /**/
       body: myCart.isEmpty
           ? const EmptyPage(description: 'Your Cart is Empty!!!\nGo Shopping Now')
           : Padding(
@@ -88,34 +88,32 @@ class _MyCartPageState extends State<MyCartPage> {
       await showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: const Text('Confirmation'),
-            content: const Text('Do you want to clear your cart'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.indigo,
-                  ),
+          return CusConfirmationDialog(
+            title: 'Confirmation',
+            content: 'Do you want to clear your cart',
+            denyOption: TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.indigo,
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    myCart.clear();
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'Clear',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
+            ),
+            acceptOption: TextButton(
+              onPressed: () {
+                setState(() {
+                  myCart.clear();
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Clear',
+                style: TextStyle(
+                  color: Colors.red,
                 ),
               ),
-            ],
+            ),
           );
         },
       );

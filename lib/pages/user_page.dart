@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:keyboard_shop/pages/wishlist_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyUserPage extends StatefulWidget {
@@ -41,7 +41,6 @@ class _MyUserPageState extends State<MyUserPage> {
                 onPressed: () {
                   setState(() {
                     userAddress = addressController.text.trim();
-                    log(userAddress);
                   });
                   Navigator.of(context).pop();
                 },
@@ -92,34 +91,31 @@ class _MyUserPageState extends State<MyUserPage> {
       await showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: const Text('Sign Out'),
-            content: const Text('Do you wanna sign out?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  if (Navigator.canPop(context)) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.indigo,
-                  ),
+          return CusConfirmationDialog(
+            title: 'Sign Out',
+            content: 'Do you wanna sign out?',
+            acceptOption: TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Log Out',
+                style: TextStyle(
+                  color: Colors.red,
                 ),
               ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Log Out',
-                  style: TextStyle(
-                    color: Colors.red,
-
-                  ),
+            ),
+            denyOption: TextButton(
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.indigo,
                 ),
               ),
-            ],
+            ),
           );
         },
       );
@@ -157,7 +153,11 @@ class _MyUserPageState extends State<MyUserPage> {
               title: 'Wishlist',
               subTitle: null,
               iconData: IconlyLight.heart,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return const WishlistPage();
+                }),
+              ),
               showTrailing: true,
             ),
             // viewed
