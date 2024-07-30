@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard_shop/models/category.dart';
+import 'package:keyboard_shop/models/category_model.dart';
 import 'package:keyboard_shop/widgets/category_widget.dart';
 
-final List<Category> category = [
-  Category(name: 'Keycap', thumbnail: 'assets/images/keycap.jpg'),
-  Category(name: 'Keyboard', thumbnail: 'assets/images/keyboard.jpeg'),
-  Category(name: 'Gaming Mouse', thumbnail: 'assets/images/gaming_mouse.jpeg'),
+final List<CategoryModel> category = [
+  CategoryModel(name: 'Keycap', thumbnail: 'assets/images/keycap.jpg'),
+  CategoryModel(name: 'Keyboard', thumbnail: 'assets/images/keyboard.jpeg'),
+  CategoryModel(name: 'Gaming Mouse', thumbnail: 'assets/images/gaming_mouse.jpeg'),
 ];
 
 class MyCategoriesPage extends StatelessWidget {
