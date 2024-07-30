@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_shop/consts/theme_data.dart';
 import 'package:keyboard_shop/pages/auth/login_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,10 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => ProductsProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
