@@ -34,10 +34,16 @@ class CusInputTextField extends StatelessWidget {
         obscureText: obscureText,
         keyboardType: inputType,
         onTapOutside: (e) => FocusScope.of(context).unfocus(),
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,
           suffixIcon: suffix,
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+          )
         ),
       ),
     );
