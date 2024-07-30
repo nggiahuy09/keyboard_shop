@@ -16,6 +16,10 @@ class ProductsProvider with ChangeNotifier {
     return _mockData.firstWhere((element) => element.id == id);
   }
 
+  List<ProductModel> findByCategory(String category) {
+    return _mockData.where((element) => element.category.toLowerCase() == category.toLowerCase()).toList();
+  }
+
   static final List<ProductModel> _mockData = [
     ProductModel(
       id: '001',

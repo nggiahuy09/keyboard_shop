@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/category_model.dart';
+import 'package:keyboard_shop/pages/view_all_page.dart';
 import 'package:keyboard_shop/widgets/category_widget.dart';
 
 final List<CategoryModel> category = [
@@ -25,7 +26,15 @@ class MyCategoriesPage extends StatelessWidget {
             child: CategoryWidget(
               assetImage: category[index].thumbnail,
               categoryName: category[index].name,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ViewAllPage(title: category[index].name);
+                    },
+                  ),
+                );
+              },
             ),
           );
         },

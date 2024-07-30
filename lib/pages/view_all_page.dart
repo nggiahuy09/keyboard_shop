@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/consts/empty_screen_data.dart';
+import 'package:keyboard_shop/models/product_model.dart';
+import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/product_item_widget.dart';
@@ -9,10 +12,12 @@ class ViewAllPage extends StatefulWidget {
     super.key,
     required this.title,
     this.isSalePage = false,
+    this.isCategoryPage = false,
   });
 
   final String title;
   final bool isSalePage;
+  final bool isCategoryPage;
 
   @override
   State<ViewAllPage> createState() => _ViewAllPageState();
@@ -29,11 +34,22 @@ class _ViewAllPageState extends State<ViewAllPage> {
     super.dispose();
   }
 
+  List<ProductModel> _getProducts(BuildContext context) {
+    final productsProvider = Provider.of<ProductsProvider>(context);
+
+    final products = widget.isCategoryPage
+        ? widget.isSalePage
+            ? productsProvider.saleProducts
+            : productsProvider.products
+        : productsProvider.findByCategory(widget.title);
+
+    return products;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = Utils(context).screenSize;
-    final productsProvider = Provider.of<ProductsProvider>(context);
-    final products = widget.isSalePage ? productsProvider.saleProducts : productsProvider.products;
+    final products = _getProducts(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -80,10 +96,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                   border: InputBorder.none,
                   hintText: 'What are you looking for?',
                   hintStyle: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.background.withOpacity(0.8),
                     fontStyle: FontStyle.normal,
                   ),
                 ),
@@ -97,29 +110,34 @@ class _ViewAllPageState extends State<ViewAllPage> {
               ),
       ),
       // body: const EmptyPage(description: 'No Product Item on Sale',),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: screenSize.width / (screenSize.height * 0.78),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              children: List.generate(
-                products.length,
-                (index) => ChangeNotifierProvider.value(
-                  value: products[index],
-                  child: const ProductItemWidget(),
-                ),
+      body: products.isEmpty
+          ? const EmptyPage(
+              description: 'This category is empty',
+              type: ConstEmptyPage.CART,
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    childAspectRatio: screenSize.width / (screenSize.height * 0.78),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    children: List.generate(
+                      products.length,
+                      (index) => ChangeNotifierProvider.value(
+                        value: products[index],
+                        child: const ProductItemWidget(),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
