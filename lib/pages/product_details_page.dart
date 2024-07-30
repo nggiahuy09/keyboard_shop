@@ -1,9 +1,17 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key});
+  const ProductDetailsPage({
+    super.key,
+    required this.product,
+  });
+
+  final ProductModel product;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -22,7 +30,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Stack(
               children: [
                 Image.asset(
-                  'assets/images/keycap.jpg',
+                  widget.product.thumbnail,
                   fit: BoxFit.fitWidth,
                 ),
                 Positioned(
@@ -51,35 +59,80 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Ten san pham',
-                    style: TextStyle(
-                      fontSize: 26,
+                  Text(
+                    widget.product.title,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontSize: 24,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Gia san pham',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Price:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          widget.product.isOnSale ? widget.product.salePrice.toString() : widget.product.price.toString(),
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
+                        if (widget.product.isOnSale)
+                          Text(
+                            widget.product.price.toString(),
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.lineThrough,
+                              color: Theme.of(context).colorScheme.inversePrimary,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'So luong:',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      CusQuantityWidget(
-                        quantity: quantity,
-                        decrement: decrement,
-                        increment: increment,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Category:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          widget.product.category.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Quantity:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        CusQuantityWidget(
+                          quantity: quantity,
+                          decrement: decrement,
+                          increment: increment,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 8),
                   CusMaterialButton(

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
+import 'package:provider/provider.dart';
 
 class ProductItemWidget extends StatefulWidget {
   const ProductItemWidget({
     super.key,
-    this.isSale = false,
   });
-
-  final bool isSale;
 
   @override
   State<ProductItemWidget> createState() => _ProductItemWidget();
@@ -18,6 +17,7 @@ class _ProductItemWidget extends State<ProductItemWidget> {
   @override
   Widget build(BuildContext context) {
     final size = Utils(context).screenSize;
+    final product = Provider.of<ProductModel>(context);
 
     return SizedBox(
       width: size.width * 0.42,
@@ -25,7 +25,7 @@ class _ProductItemWidget extends State<ProductItemWidget> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const ProductDetailsPage();
+            return ProductDetailsPage(product: product);
           }));
         },
         child: Container(
@@ -38,18 +38,18 @@ class _ProductItemWidget extends State<ProductItemWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/images/keycap.jpg',
+                product.thumbnail,
                 // height: size.width * 0.42,
                 // width: double.infinity,
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Keycap astronautttttt',
+              Text(
+                product.title,
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
@@ -59,7 +59,7 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '1.999.000',
+                    product.isOnSale ? product.salePrice.toString() : product.price.toString(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -69,9 +69,9 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                           .withOpacity(0.7),
                     ),
                   ),
-                  if (widget.isSale)
+                  if (product.isOnSale)
                     Text(
-                      '1.999.000',
+                      product.price.toString(),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -86,7 +86,7 @@ class _ProductItemWidget extends State<ProductItemWidget> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Keycap',
+                product.category.toUpperCase(),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

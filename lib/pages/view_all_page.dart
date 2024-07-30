@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/product_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class ViewAllPage extends StatefulWidget {
   const ViewAllPage({
     super.key,
     required this.title,
+    this.isSalePage = false,
   });
 
   final String title;
+  final bool isSalePage;
 
   @override
   State<ViewAllPage> createState() => _ViewAllPageState();
@@ -16,6 +20,7 @@ class ViewAllPage extends StatefulWidget {
 
 class _ViewAllPageState extends State<ViewAllPage> {
   final TextEditingController _searchTextController = TextEditingController();
+
   var isSearching = false;
 
   @override
@@ -27,6 +32,8 @@ class _ViewAllPageState extends State<ViewAllPage> {
   @override
   Widget build(BuildContext context) {
     final screenSize = Utils(context).screenSize;
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    final products = widget.isSalePage ? productsProvider.saleProducts : productsProvider.products;
 
     return Scaffold(
       appBar: AppBar(
@@ -103,8 +110,11 @@ class _ViewAllPageState extends State<ViewAllPage> {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               children: List.generate(
-                5,
-                (index) => const ProductItemWidget(),
+                products.length,
+                (index) => ChangeNotifierProvider.value(
+                  value: products[index],
+                  child: const ProductItemWidget(),
+                ),
               ),
             ),
           ],

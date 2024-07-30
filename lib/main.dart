@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_shop/consts/theme_data.dart';
-import 'package:keyboard_shop/pages/bottom_bar_page.dart';
+import 'package:keyboard_shop/pages/auth/login_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -47,13 +48,16 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => themeProvider,
         ),
+        ChangeNotifierProvider(
+          create: (_) => ProductsProvider(),
+        )
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeProvider.getTheme, context),
-            home: const MyBottomBarPage(),
+            home: const LoginPage(),
           );
         },
       ),

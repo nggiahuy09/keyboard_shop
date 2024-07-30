@@ -1,8 +1,10 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/pages/view_all_page.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/product_item_widget.dart';
+import 'package:provider/provider.dart';
 
 final List<String> cardSwiper = [
   'assets/images/card_swiper_1.jpg',
@@ -17,6 +19,9 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = Utils(context).screenSize;
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    final products = productsProvider.products;
+    final saleProducts = productsProvider.saleProducts;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -49,8 +54,10 @@ class MyHomePage extends StatelessWidget {
               viewAll: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        const ViewAllPage(title: 'For You'),
+                    builder: (context) => const ViewAllPage(
+                      title: 'For You',
+                      isSalePage: true,
+                    ),
                   ),
                 );
               },
@@ -61,12 +68,15 @@ class MyHomePage extends StatelessWidget {
               height: screenSize.height * 0.34,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 3,
+                itemCount: saleProducts.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: ProductItemWidget(),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ChangeNotifierProvider.value(
+                      value: saleProducts[index],
+                      child: const ProductItemWidget(),
+                    ),
                   );
                 },
               ),
@@ -78,8 +88,7 @@ class MyHomePage extends StatelessWidget {
               viewAll: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>
-                    const ViewAllPage(title: 'Our Gears'),
+                    builder: (context) => const ViewAllPage(title: 'Our Gears'),
                   ),
                 );
               },
@@ -95,9 +104,12 @@ class MyHomePage extends StatelessWidget {
               mainAxisSpacing: 16,
               childAspectRatio: screenSize.width / (screenSize.height * 0.78),
               children: List.generate(
-                4,
+                products.length,
                 (index) {
-                  return const ProductItemWidget();
+                  return ChangeNotifierProvider.value(
+                    value: products[index],
+                    child: const ProductItemWidget(),
+                  );
                 },
               ),
             ),
