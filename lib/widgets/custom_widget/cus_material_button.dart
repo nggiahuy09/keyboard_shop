@@ -6,6 +6,7 @@ class CusMaterialButton extends StatelessWidget {
     required this.content,
     this.subContent = '',
     this.minWidth = 0,
+    this.height = 40,
     this.fontSizeContent = 22,
     required this.onTap,
   });
@@ -15,11 +16,13 @@ class CusMaterialButton extends StatelessWidget {
   final String subContent;
   final Function() onTap;
   final double minWidth;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       minWidth: minWidth == 0 ? double.infinity : minWidth,
+      height: height,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -57,17 +60,24 @@ class CusMaterialButtonAccent extends StatelessWidget {
     super.key,
     required this.content,
     this.subContent = '',
+    this.height = 40,
+    this.fontSizeContent = 22,
+    this.fontSizeSubContent = 16,
     required this.onTap,
   });
 
   final String content;
   final String subContent;
   final Function() onTap;
+  final double fontSizeContent;
+  final double fontSizeSubContent;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       minWidth: double.infinity,
+      height: height,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -82,7 +92,7 @@ class CusMaterialButtonAccent extends StatelessWidget {
           Text(
             content,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: fontSizeContent,
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.background,
             ),
@@ -91,7 +101,7 @@ class CusMaterialButtonAccent extends StatelessWidget {
             Text(
               subContent,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: fontSizeSubContent,
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.background,
               ),

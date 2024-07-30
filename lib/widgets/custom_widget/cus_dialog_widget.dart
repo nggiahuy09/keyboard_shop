@@ -6,13 +6,13 @@ class CusConfirmationDialog extends StatelessWidget {
     required this.title,
     required this.content,
     required this.acceptOption,
-    required this.denyOption,
+    this.denyOption,
   });
 
   final String title;
   final String content;
   final TextButton acceptOption;
-  final TextButton denyOption;
+  final TextButton? denyOption;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,8 @@ class CusConfirmationDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        denyOption,
+        if(denyOption != null)
+          denyOption!,
         acceptOption,
       ],
     );
