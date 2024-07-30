@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:keyboard_shop/pages/order_page.dart';
+import 'package:keyboard_shop/pages/viewed_page.dart';
 import 'package:keyboard_shop/pages/wishlist_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
@@ -145,7 +147,9 @@ class _MyUserPageState extends State<MyUserPage> {
               title: 'Orders',
               subTitle: null,
               iconData: IconlyLight.wallet,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return const OrderPage();
+              })),
               showTrailing: true,
             ),
             // wishlist
@@ -165,7 +169,11 @@ class _MyUserPageState extends State<MyUserPage> {
               title: 'Viewed',
               subTitle: null,
               iconData: IconlyLight.show,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return const ViewedPage();
+                }),
+              ),
               showTrailing: true,
             ),
             // forget password
@@ -183,7 +191,10 @@ class _MyUserPageState extends State<MyUserPage> {
                 children: [
                   Icon(IconlyLight.setting),
                   SizedBox(width: 16),
-                  Text('Theme'),
+                  Text(
+                    'Theme',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
               onChanged: (bool value) {
@@ -216,7 +227,12 @@ class _MyUserPageState extends State<MyUserPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
         subtitle: subTitle != null ? Text(subTitle) : null,
         trailing: showTrailing ? const Icon(IconlyLight.arrowRight2) : null,
         onTap: onTap,
