@@ -5,6 +5,8 @@ import 'package:keyboard_shop/pages/cart_page.dart';
 import 'package:keyboard_shop/pages/categories_page.dart';
 import 'package:keyboard_shop/pages/home_page.dart';
 import 'package:keyboard_shop/pages/user_page.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyBottomBarPage extends StatefulWidget {
   const MyBottomBarPage({super.key});
@@ -43,6 +45,8 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(_page[_selectedIndex]['title']),
@@ -65,7 +69,7 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
           BottomNavigationBarItem(
             icon: badges.Badge(
               badgeContent: Text(
-                '0',
+                cartProvider.cartItems.length.toString(),
                 style: TextStyle(color: Theme.of(context).colorScheme.background),
               ),
               badgeStyle: badges.BadgeStyle(badgeColor: Theme.of(context).colorScheme.inversePrimary),
@@ -73,7 +77,7 @@ class _MyBottomBarPage extends State<MyBottomBarPage> {
             ),
             activeIcon: badges.Badge(
               badgeContent: Text(
-                '0',
+                cartProvider.cartItems.length.toString(),
                 style: TextStyle(color: Theme.of(context).colorScheme.background),
               ),
               badgeStyle: badges.BadgeStyle(badgeColor: Theme.of(context).colorScheme.inversePrimary),
