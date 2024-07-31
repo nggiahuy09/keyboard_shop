@@ -1,9 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/product_model.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({
@@ -22,6 +22,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -138,7 +140,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   CusMaterialButton(
                     content: 'Add to Cart',
                     subContent: 'Free Shipping',
-                    onTap: () {},
+                    onTap: () => cartProvider.addToCart(productId: widget.product.id, quantity: quantity),
                   ),
                   const SizedBox(height: 8),
                   CusMaterialButtonAccent(

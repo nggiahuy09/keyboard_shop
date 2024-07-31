@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/models/cart_model.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
+import 'package:provider/provider.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({super.key});
+  const CartWidget({
+    super.key,
+    required this.cartItem,
+  });
+
+  final CartModel cartItem;
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  int quantity = 1;
-
   @override
   Widget build(BuildContext context) {
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final product = productsProvider.findById(widget.cartItem.productId);
+
     return GestureDetector(
       onTap: () {},
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.asset(
-            'assets/images/keycap.jpg',
+            product.thumbnail,
             width: 120,
             height: 120,
           ),
@@ -29,22 +40,22 @@ class _CartWidgetState extends State<CartWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ten san phammmmmmmmmmmmmm',
+                      product.title,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      'Gia san pham',
-                      style: TextStyle(
+                      product.isOnSale ? product.salePrice.toString() : product.price.toString(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -54,14 +65,19 @@ class _CartWidgetState extends State<CartWidget> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
+                    // todo: fix quantity logic
                     CusQuantityWidget(
-                      quantity: quantity,
-                      decrement: decrement,
-                      increment: increment,
+                      quantity: widget.cartItem.quantity,
+                      decrement: () => setState(() {
+                        cartProvider.decreaseQuantity(widget.cartItem.productId);
+                      }),
+                      increment: () => setState(() {
+                        cartProvider.increaseQuantity(widget.cartItem.productId);
+                      }),
                     ),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => cartProvider.deleteById(context, product.id),
                       child: const Row(
                         children: [
                           Text(
@@ -84,19 +100,5 @@ class _CartWidgetState extends State<CartWidget> {
         ],
       ),
     );
-  }
-
-  void increment() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrement() {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
-      });
-    }
   }
 }

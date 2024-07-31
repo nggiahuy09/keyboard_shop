@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/empty_screen_data.dart';
+import 'package:keyboard_shop/models/cart_model.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/widgets/cart_widget.dart';
-import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
-
-List<CartWidget> myCart = [
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-  const CartWidget(),
-];
+import 'package:provider/provider.dart';
 
 class MyCartPage extends StatefulWidget {
   const MyCartPage({super.key});
@@ -28,6 +18,11 @@ class MyCartPage extends StatefulWidget {
 class _MyCartPageState extends State<MyCartPage> {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    final myCart = cartProvider.cartItems.values.toList();
+    final totalPrice = cartProvider.totalPrice(productsProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart (${myCart.length})'),
@@ -37,7 +32,9 @@ class _MyCartPageState extends State<MyCartPage> {
               Icons.delete,
               size: 26,
             ),
-            onPressed: _clearCart,
+            onPressed: () {
+              cartProvider.clearCart(context);
+            },
           )
         ],
       ),
@@ -47,16 +44,15 @@ class _MyCartPageState extends State<MyCartPage> {
               description: 'Your Cart is Empty!!!\nGo Shopping Now',
             )
           : Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Total: ......',
-                        style: TextStyle(
+                      Text(
+                        'Total: ${totalPrice.toString()}',
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
@@ -76,7 +72,10 @@ class _MyCartPageState extends State<MyCartPage> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: myCart[index],
+                          child: ChangeNotifierProvider.value(
+                            value: myCart[index],
+                            child: CartWidget(cartItem: myCart[index]),
+                          ),
                         );
                       },
                     ),
@@ -85,42 +84,5 @@ class _MyCartPageState extends State<MyCartPage> {
               ),
             ),
     );
-  }
-
-  Future<void> _clearCart() async {
-    if (myCart.isNotEmpty) {
-      await showDialog(
-        context: context,
-        builder: (context) {
-          return CusConfirmationDialog(
-            title: 'Confirmation',
-            content: 'Do you want to clear your cart',
-            denyOption: TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.indigo,
-                ),
-              ),
-            ),
-            acceptOption: TextButton(
-              onPressed: () {
-                setState(() {
-                  myCart.clear();
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Clear',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
   }
 }
