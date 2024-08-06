@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
+import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
@@ -20,11 +21,14 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final wishlistProvider = Provider.of<WishlistProvider>(context);
+    final viewedListProvider = Provider.of<ViewedProductProvider>(context);
 
+    viewedListProvider.addToViewed(productId: widget.product.id);
 
     return Scaffold(
       body: SingleChildScrollView(

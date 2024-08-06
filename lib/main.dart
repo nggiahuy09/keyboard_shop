@@ -5,6 +5,7 @@ import 'package:keyboard_shop/pages/auth/login_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -59,10 +60,12 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => WishlistProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ViewedProductProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
-
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeProvider.getTheme, context),
