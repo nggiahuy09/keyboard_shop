@@ -1,9 +1,14 @@
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_shop/pages/auth/login_page.dart';
+import 'package:keyboard_shop/auth/login_page.dart';
+import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_input_textfield.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
+
+import '../pages/bottom_bar_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -26,6 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isValidConfirmPW = true;
   bool _isValidAddress = true;
   bool _isValidUsername = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -50,14 +56,47 @@ class _SignUpPageState extends State<SignUpPage> {
       username.isEmpty ? _isValidUsername = false : _isValidUsername = true;
       confirmPW != password ? _isValidConfirmPW = false : _isValidConfirmPW = true;
       address.isEmpty ? _isValidAddress = false : _isValidAddress = true;
+
+      _isLoading = true;
     });
 
     final canSignUp = _isValidAddress && _isValidConfirmPW && _isValidUsername && _isValidEmail && _isValidPassword;
     if (canSignUp) {
-      // todo: do something in here
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      //   return const MyBottomBarPage();
-      // }));
+      try {
+        await authInstance.createUserWithEmailAndPassword(email: email, password: password);
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const MyBottomBarPage();
+              },
+            ),
+          );
+        }
+
+        log('sign up successfully');
+      } on FirebaseAuthException catch (err) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                err.message.toString(),
+              ),
+            ),
+          );
+        }
+
+        log(err.toString());
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -84,7 +123,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const _HeaderSignUp(),
-
                   const SizedBox(height: 72),
                   CusInputTextField(
                     editingController: _usernameController,
@@ -166,12 +204,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: CusErrorText(text: 'Address cannot be empty'),
                     ),
                   const SizedBox(height: 40),
-                  CusMaterialButton(
-                    content: 'Sign Up',
-                    height: 56,
-                    fontSizeContent: 20,
-                    onTap: _signUp,
-                  ),
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : CusMaterialButton(
+                          content: 'Sign Up',
+                          height: 56,
+                          fontSizeContent: 20,
+                          onTap: _signUp,
+                        ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -185,7 +225,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginPage())),
+                        onTap: () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        ),
                         child: Text(
                           'Sign in',
                           style: TextStyle(
@@ -245,4 +289,3 @@ class _HeaderSignUp extends StatelessWidget {
     );
   }
 }
-

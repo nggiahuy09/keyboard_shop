@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard_shop/pages/auth/forget_password_page.dart';
-import 'package:keyboard_shop/pages/auth/sign_up_page.dart';
+import 'package:keyboard_shop/auth/forget_password_page.dart';
+import 'package:keyboard_shop/auth/sign_up_page.dart';
 import 'package:keyboard_shop/pages/bottom_bar_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
@@ -59,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const _HeaderLogin(),
                 const SizedBox(height: 72),
-
                 CusInputTextField(
                   editingController: _emailController,
                   hintText: 'Email',
@@ -71,7 +70,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: CusErrorText(text: 'Your Email must contains @'),
                   ),
                 const SizedBox(height: 8),
-
                 CusInputTextField(
                   editingController: _passwordController,
                   hintText: 'Password',
@@ -97,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: CusErrorText(text: 'Your Password must at least 8 characters'),
                   ),
                 const SizedBox(height: 8),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -120,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 48),
-
                 CusMaterialButton(
                   content: 'Sign In',
                   height: 56,
@@ -128,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: _signIn,
                 ),
                 const SizedBox(height: 8),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -159,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(width: 16),
-
                     Flexible(
                       child: CusMaterialButtonAccent(
                         content: 'Guest',
@@ -171,7 +165,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-
                 Row(
                   children: [
                     Text(
@@ -184,7 +177,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage())),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpPage(),
+                        ),
+                      ),
                       child: Text(
                         'Sign up',
                         style: TextStyle(
