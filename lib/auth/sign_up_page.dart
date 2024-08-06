@@ -6,6 +6,7 @@ import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_input_textfield.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_loading_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 
 import '../pages/bottom_bar_page.dart';
@@ -104,147 +105,148 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.indigo.shade50,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SafeArea(
-              child: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Utils(context).primaryColor,
+      body: CusLoadingWidget(
+        isLoading: _isLoading,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SafeArea(
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Utils(context).primaryColor,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const _HeaderSignUp(),
-                  const SizedBox(height: 72),
-                  CusInputTextField(
-                    editingController: _usernameController,
-                    hintText: 'Username',
-                  ),
-                  if (!_isValidUsername)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: CusErrorText(text: 'Username cannot be empty'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const _HeaderSignUp(),
+                    const SizedBox(height: 72),
+                    CusInputTextField(
+                      editingController: _usernameController,
+                      hintText: 'Username',
                     ),
-                  const SizedBox(height: 8),
-                  CusInputTextField(
-                    editingController: _emailController,
-                    hintText: 'Email',
-                  ),
-                  if (!_isValidEmail)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: CusErrorText(text: 'Email must be contain @'),
-                    ),
-                  const SizedBox(height: 8),
-                  CusInputTextField(
-                    editingController: _passwordController,
-                    hintText: 'Password',
-                    obscureText: !_isShowPassword,
-                    suffix: IconButton(
-                      onPressed: () => setState(() {
-                        _isShowPassword = !_isShowPassword;
-                      }),
-                      icon: _isShowPassword
-                          ? Icon(
-                              Icons.visibility_off,
-                              color: Utils(context).primaryColor,
-                            )
-                          : Icon(
-                              Icons.visibility,
-                              color: Utils(context).primaryColor,
-                            ),
-                    ),
-                  ),
-                  if (!_isValidPassword)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: CusErrorText(text: 'Password must be at least 8 characters'),
-                    ),
-                  const SizedBox(height: 8),
-                  CusInputTextField(
-                    editingController: _confirmPWController,
-                    hintText: 'Confirm your password',
-                    obscureText: !_isShowConfirmPW,
-                    suffix: IconButton(
-                      onPressed: () => setState(() {
-                        _isShowConfirmPW = !_isShowConfirmPW;
-                      }),
-                      icon: _isShowConfirmPW
-                          ? Icon(
-                              Icons.visibility_off,
-                              color: Utils(context).primaryColor,
-                            )
-                          : Icon(
-                              Icons.visibility,
-                              color: Utils(context).primaryColor,
-                            ),
-                    ),
-                  ),
-                  if (!_isValidConfirmPW)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: CusErrorText(text: 'Confirm Password is incorrect'),
-                    ),
-                  const SizedBox(height: 8),
-                  CusInputTextField(
-                    editingController: _addressController,
-                    hintText: 'Address',
-                  ),
-                  if (!_isValidAddress)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: CusErrorText(text: 'Address cannot be empty'),
-                    ),
-                  const SizedBox(height: 40),
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : CusMaterialButton(
-                          content: 'Sign Up',
-                          height: 56,
-                          fontSizeContent: 20,
-                          onTap: _signUp,
-                        ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Text(
-                        'Already a user?',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    if (!_isValidUsername)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: CusErrorText(text: 'Username cannot be empty'),
                       ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        ),
-                        child: Text(
-                          'Sign in',
+                    const SizedBox(height: 8),
+                    CusInputTextField(
+                      editingController: _emailController,
+                      hintText: 'Email',
+                    ),
+                    if (!_isValidEmail)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: CusErrorText(text: 'Email must be contain @'),
+                      ),
+                    const SizedBox(height: 8),
+                    CusInputTextField(
+                      editingController: _passwordController,
+                      hintText: 'Password',
+                      obscureText: !_isShowPassword,
+                      suffix: IconButton(
+                        onPressed: () => setState(() {
+                          _isShowPassword = !_isShowPassword;
+                        }),
+                        icon: _isShowPassword
+                            ? Icon(
+                                Icons.visibility_off,
+                                color: Utils(context).primaryColor,
+                              )
+                            : Icon(
+                                Icons.visibility,
+                                color: Utils(context).primaryColor,
+                              ),
+                      ),
+                    ),
+                    if (!_isValidPassword)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: CusErrorText(text: 'Password must be at least 8 characters'),
+                      ),
+                    const SizedBox(height: 8),
+                    CusInputTextField(
+                      editingController: _confirmPWController,
+                      hintText: 'Confirm your password',
+                      obscureText: !_isShowConfirmPW,
+                      suffix: IconButton(
+                        onPressed: () => setState(() {
+                          _isShowConfirmPW = !_isShowConfirmPW;
+                        }),
+                        icon: _isShowConfirmPW
+                            ? Icon(
+                                Icons.visibility_off,
+                                color: Utils(context).primaryColor,
+                              )
+                            : Icon(
+                                Icons.visibility,
+                                color: Utils(context).primaryColor,
+                              ),
+                      ),
+                    ),
+                    if (!_isValidConfirmPW)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: CusErrorText(text: 'Confirm Password is incorrect'),
+                      ),
+                    const SizedBox(height: 8),
+                    CusInputTextField(
+                      editingController: _addressController,
+                      hintText: 'Address',
+                    ),
+                    if (!_isValidAddress)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: CusErrorText(text: 'Address cannot be empty'),
+                      ),
+                    const SizedBox(height: 40),
+                    CusMaterialButton(
+                      content: 'Sign Up',
+                      height: 56,
+                      fontSizeContent: 20,
+                      onTap: _signUp,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Text(
+                          'Already a user?',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Utils(context).primaryColor,
-                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onBackground,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                        const SizedBox(width: 4),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign in',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Utils(context).primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
