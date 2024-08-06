@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/cart_model.dart';
+import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
@@ -25,7 +26,15 @@ class _CartWidgetState extends State<CartWidget> {
     final product = productsProvider.findById(widget.cartItem.productId);
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return ProductDetailsPage(product: product);
+            },
+          ),
+        );
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

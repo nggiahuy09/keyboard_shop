@@ -5,6 +5,7 @@ import 'package:keyboard_shop/pages/auth/login_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -55,9 +56,13 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => WishlistProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
+
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeProvider.getTheme, context),

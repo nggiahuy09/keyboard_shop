@@ -4,6 +4,7 @@ import 'package:keyboard_shop/pages/order_page.dart';
 import 'package:keyboard_shop/pages/viewed_page.dart';
 import 'package:keyboard_shop/pages/wishlist_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,8 @@ class _MyUserPageState extends State<MyUserPage> {
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<ThemeProvider>(context);
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+
     TextEditingController addressController = TextEditingController();
 
     @override
@@ -154,7 +157,7 @@ class _MyUserPageState extends State<MyUserPage> {
             ),
             // wishlist
             _listTile(
-              title: 'Wishlist',
+              title: 'Wishlist (${wishListProvider.wishItemsList.length})',
               subTitle: null,
               iconData: IconlyLight.heart,
               onTap: () => Navigator.of(context).push(

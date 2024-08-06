@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
+import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,8 @@ class _ProductItemWidget extends State<ProductItemWidget> {
   Widget build(BuildContext context) {
     final size = Utils(context).screenSize;
     final product = Provider.of<ProductModel>(context);
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+    final isInWishList = wishListProvider.isInWishlist(product.id);
 
     return SizedBox(
       width: size.width * 0.42,
@@ -63,10 +67,7 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.7),
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                   if (product.isOnSale)
@@ -75,24 +76,33 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
                 ],
               ),
               const SizedBox(height: 4),
-              Text(
-                product.category.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    product.category.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () =>
+                        isInWishList ? wishListProvider.deleteById(context, product.id) : wishListProvider.addToWishlist(productId: product.id),
+                    child: Icon(
+                      isInWishList ? IconlyBold.heart : IconlyLight.heart,
+                      color: Colors.redAccent,
+                    ),
+                  )
+                ],
               ),
               const SizedBox(height: 8),
             ],
