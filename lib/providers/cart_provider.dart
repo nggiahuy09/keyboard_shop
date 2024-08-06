@@ -6,6 +6,20 @@ import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 class CartProvider with ChangeNotifier {
   Map<String, CartModel> get cartItems => _cartItems;
 
+  bool isInCartList(String id) {
+    final itemsList = _cartItems.values.toList();
+    bool inList = false;
+
+    for (final item in itemsList) {
+      if (item.productId == id) {
+        inList = true;
+        break;
+      }
+    }
+
+    return inList;
+  }
+
   void clearCart(BuildContext context)  {
     if (_cartItems.isNotEmpty) {
       showDialog(
