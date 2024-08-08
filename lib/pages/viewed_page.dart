@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/empty_screen_data.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/providers/viewed_products_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/viewed_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,13 @@ class _ViewedPage extends State<ViewedPage> {
               Icons.delete,
               size: 26,
             ),
-            onPressed: () => viewedListProvider.clearViewedList(context),
+            onPressed: () {
+              if (viewedList.isNotEmpty) {
+                viewedListProvider.clearViewedList(context);
+              } else {
+                Utils.showToast(msg: 'Your History is Empty');
+              }
+            },
           )
         ],
       ),

@@ -47,6 +47,8 @@ dependencies:
   firebase_auth: ^5.1.3
   #google sign in
   google_sign_in: ^6.2.1
+  #flutter toast
+  fluttertoast: ^8.2.6
 
 dev_dependencies:
   flutter_test:

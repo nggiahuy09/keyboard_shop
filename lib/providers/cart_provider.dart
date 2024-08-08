@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/cart_model.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 
 class CartProvider with ChangeNotifier {
@@ -42,6 +43,8 @@ class CartProvider with ChangeNotifier {
                 _cartItems.clear();
                 notifyListeners();
                 Navigator.of(context).maybePop();
+
+                Utils.showToast(msg: 'Clear Cart Successfully');
               },
               child: const Text(
                 'Clear',

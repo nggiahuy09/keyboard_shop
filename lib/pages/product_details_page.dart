@@ -147,11 +147,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   CusMaterialButton(
                     content: 'Add to Cart',
                     subContent: 'Free Shipping',
-                    onTap: () {
+                    onTap: () async {
                       if (Utils.checkHasLogin()) {
                         cartProvider.addToCart(productId: widget.product.id, quantity: quantity);
+                        Utils.showToast(msg: 'Add to Cart Successfully');
                       } else {
-                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                        Utils.showToast(msg: 'Please Login to continue...');
                       }
                     },
                   ),
@@ -161,8 +162,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     onTap: () {
                       if (Utils.checkHasLogin()) {
                         wishlistProvider.addToWishlist(productId: widget.product.id);
+                        Utils.showToast(msg: 'Add to Wishlist Successfully');
                       } else {
-                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                        Utils.showToast(msg: 'Please Login to continue...');
                       }
                     },
                   ),

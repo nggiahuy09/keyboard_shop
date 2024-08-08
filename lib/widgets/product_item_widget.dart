@@ -98,8 +98,9 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                     onTap: () {
                       if (Utils.checkHasLogin()) {
                         isInWishList ? wishListProvider.deleteById(context, product.id) : wishListProvider.addToWishlist(productId: product.id);
+                        Utils.showToast(msg: 'Add to Wishlist Successfully');
                       } else {
-                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                        Utils.showToast(msg: 'Please Login to continue...');
                       }
                     },
                     child: Icon(

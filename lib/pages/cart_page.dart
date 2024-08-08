@@ -3,6 +3,7 @@ import 'package:keyboard_shop/consts/empty_screen_data.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/cart_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,11 @@ class _MyCartPageState extends State<MyCartPage> {
               size: 26,
             ),
             onPressed: () {
-              cartProvider.clearCart(context);
+              if (myCart.isNotEmpty) {
+                cartProvider.clearCart(context);
+              } else {
+                Utils.showToast(msg: 'Your Cart is Empty');
+              }
             },
           )
         ],

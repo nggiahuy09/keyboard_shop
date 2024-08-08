@@ -38,10 +38,13 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
     if (_isValidEmail) {
       try {
-        await authInstance.sendPasswordResetEmail(email: email);
         setState(() {
           _isLoading = false;
         });
+
+        await authInstance.sendPasswordResetEmail(email: email);
+        
+        Utils.showToast(msg: 'Send Email to Reset Password');
       } on FirebaseAuthException catch (err) {
         if (mounted) {
           Utils.showSnackBar(context, msg: err.message!);
@@ -86,11 +89,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Forget Password',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                   const SizedBox(height: 16),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/viewed_product_model.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 
 class ViewedProductProvider with ChangeNotifier {
@@ -29,6 +30,8 @@ class ViewedProductProvider with ChangeNotifier {
                 _viewedProducts.clear();
                 notifyListeners();
                 Navigator.of(context).maybePop();
+
+                Utils.showToast(msg: 'Clear History Successfully');
               },
               child: const Text(
                 'Clear',

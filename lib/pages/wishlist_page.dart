@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/empty_screen_data.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/wishlist_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,13 @@ class _WishlistPageState extends State<WishlistPage> {
               Icons.delete,
               size: 26,
             ),
-            onPressed: () => wishlistProvider.clearWishlist(context),
+            onPressed: () {
+              if (myWishlist.isNotEmpty) {
+                wishlistProvider.clearWishlist(context);
+              } else {
+                Utils.showToast(msg: 'Your Wish List is Empty');
+              }
+            },
           )
         ],
       ),

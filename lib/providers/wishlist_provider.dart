@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/wishlist_model.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 
 class WishlistProvider with ChangeNotifier {
@@ -45,6 +46,8 @@ class WishlistProvider with ChangeNotifier {
                 _wishItems.clear();
                 notifyListeners();
                 Navigator.of(context).maybePop();
+
+                Utils.showToast(msg: 'Clear Wish List Successfully');
               },
               child: const Text(
                 'Clear',
