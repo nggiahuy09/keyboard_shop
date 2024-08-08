@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:keyboard_shop/auth/forget_password_page.dart';
 import 'package:keyboard_shop/auth/login_page.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/pages/order_page.dart';
@@ -191,9 +192,9 @@ class _MyUserPageState extends State<MyUserPage> {
               subTitle: null,
               iconData: IconlyLight.show,
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return const ViewedPage();
-                }),
+                MaterialPageRoute(
+                  builder: (context) => const ViewedPage(),
+                ),
               ),
               showTrailing: true,
             ),
@@ -202,7 +203,11 @@ class _MyUserPageState extends State<MyUserPage> {
               title: 'Forget Password',
               subTitle: null,
               iconData: IconlyLight.lock,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ForgetPasswordPage(),
+                ),
+              ),
               showTrailing: true,
             ),
             // theme
