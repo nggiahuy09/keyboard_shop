@@ -71,25 +71,15 @@ class _SignUpPageState extends State<SignUpPage> {
         });
 
         if (mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const MyBottomBarPage();
-              },
-            ),
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MyBottomBarPage()),
           );
         }
 
         log('sign up successfully');
       } on FirebaseAuthException catch (err) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                err.message.toString(),
-              ),
-            ),
-          );
+          Utils.showSnackBar(context, msg: err.message!);
         }
 
         log(err.toString());

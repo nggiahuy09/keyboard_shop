@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:keyboard_shop/auth/login_page.dart';
+import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/pages/order_page.dart';
 import 'package:keyboard_shop/pages/viewed_page.dart';
 import 'package:keyboard_shop/pages/wishlist_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -100,7 +104,21 @@ class _MyUserPageState extends State<MyUserPage> {
             title: 'Sign Out',
             content: 'Do you wanna sign out?',
             acceptOption: TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await authInstance.signOut();
+
+                  if (mounted) {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ));
+                  }
+                } on FirebaseAuthException catch (err) {
+                  if (mounted) {
+                    Utils.showSnackBar(context, msg: err.message!);
+                  }
+                }
+              },
               child: const Text(
                 'Log Out',
                 style: TextStyle(
@@ -129,9 +147,9 @@ class _MyUserPageState extends State<MyUserPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: const Text(
-          'nggiahuy09@gmail.com',
-          style: TextStyle(fontSize: 16),
+        title: Text(
+          authInstance.currentUser?.email ?? 'Hi, please login your account',
+          style: const TextStyle(fontSize: 16),
         ),
       ),
       body: SingleChildScrollView(
@@ -214,6 +232,16 @@ class _MyUserPageState extends State<MyUserPage> {
               onTap: showLogOutDialog,
               showTrailing: false,
             ),
+            if (Utils.checkHasLogin() == false)
+              _listTile(
+                title: 'Log In',
+                subTitle: null,
+                iconData: IconlyLight.login,
+                onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                )),
+                showTrailing: false,
+              ),
           ],
         ),
       ),
