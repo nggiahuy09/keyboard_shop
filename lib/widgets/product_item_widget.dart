@@ -95,8 +95,13 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () =>
-                        isInWishList ? wishListProvider.deleteById(context, product.id) : wishListProvider.addToWishlist(productId: product.id),
+                    onTap: () {
+                      if (Utils.checkHasLogin()) {
+                        isInWishList ? wishListProvider.deleteById(context, product.id) : wishListProvider.addToWishlist(productId: product.id);
+                      } else {
+                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                      }
+                    },
                     child: Icon(
                       isInWishList ? IconlyBold.heart : IconlyLight.heart,
                       color: Colors.redAccent,
