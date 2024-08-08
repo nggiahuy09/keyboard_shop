@@ -3,6 +3,7 @@ import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
 import 'package:provider/provider.dart';
@@ -146,13 +147,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   CusMaterialButton(
                     content: 'Add to Cart',
                     subContent: 'Free Shipping',
-                    onTap: () => cartProvider.addToCart(productId: widget.product.id, quantity: quantity),
+                    onTap: () {
+                      if (Utils.checkHasLogin()) {
+                        cartProvider.addToCart(productId: widget.product.id, quantity: quantity);
+                      } else {
+                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                      }
+                    },
                   ),
                   const SizedBox(height: 8),
                   CusMaterialButtonAccent(
                     content: 'Add to Wishlist',
                     onTap: () {
-                      wishlistProvider.addToWishlist(productId: widget.product.id);
+                      if (Utils.checkHasLogin()) {
+                        wishlistProvider.addToWishlist(productId: widget.product.id);
+                      } else {
+                        Utils.showSnackBar(context, msg: 'Please Login to continue...');
+                      }
                     },
                   ),
                 ],

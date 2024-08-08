@@ -3,7 +3,6 @@ import 'package:keyboard_shop/models/viewed_product_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
-import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:provider/provider.dart';
 
