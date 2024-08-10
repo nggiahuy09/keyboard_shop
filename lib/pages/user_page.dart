@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -9,8 +10,10 @@ import 'package:keyboard_shop/pages/viewed_page.dart';
 import 'package:keyboard_shop/pages/wishlist_page.dart';
 import 'package:keyboard_shop/provider/theme_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
+import 'package:keyboard_shop/widgets/custom_widget/cus_loading_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyUserPage extends StatefulWidget {
@@ -21,7 +24,29 @@ class MyUserPage extends StatefulWidget {
 }
 
 class _MyUserPageState extends State<MyUserPage> {
-  String userAddress = 'My Address 2';
+  String userAddress = '';
+  Map<String, dynamic> user = {};
+  bool isLoading = false;
+
+  void getUserDataFromFireStore() async {
+    user = await FirebaseService.getUserData();
+    userAddress = user['shipping_address'];
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      isLoading = true;
+    });
+
+    getUserDataFromFireStore();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +73,19 @@ class _MyUserPageState extends State<MyUserPage> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     userAddress = addressController.text.trim();
                   });
+
+                  await FirebaseService.setUserFireStoreData(
+                    userUid: userUid,
+                    userName: user['name'],
+                    email: user['email'],
+                    address: user['shipping_address'],
+                    lastModify: Timestamp.now(),
+                  );
+
                   Navigator.of(context).pop();
                 },
                 child: const Text('Update'),
@@ -149,105 +183,111 @@ class _MyUserPageState extends State<MyUserPage> {
       appBar: AppBar(
         toolbarHeight: 40,
         title: Text(
-          authInstance.currentUser?.email ?? 'Hi, please login your account',
-          style: const TextStyle(fontSize: 16),
+          'Hi, ${user['name']}',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // address
-            _listTile(
-              title: 'Address',
-              subTitle: userAddress,
-              iconData: IconlyLight.profile,
-              onTap: showUpdateAddressDialog,
-              showTrailing: true,
-            ),
-            // orders
-            _listTile(
-              title: 'Orders',
-              subTitle: null,
-              iconData: IconlyLight.wallet,
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return const OrderPage();
-              })),
-              showTrailing: true,
-            ),
-            // wishlist
-            _listTile(
-              title: 'Wishlist (${wishListProvider.wishItemsList.length})',
-              subTitle: null,
-              iconData: IconlyLight.heart,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return const WishlistPage();
-                }),
-              ),
-              showTrailing: true,
-            ),
-            // viewed
-            _listTile(
-              title: 'Viewed',
-              subTitle: null,
-              iconData: IconlyLight.show,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ViewedPage(),
-                ),
-              ),
-              showTrailing: true,
-            ),
-            // forget password
-            _listTile(
-              title: 'Forget Password',
-              subTitle: null,
-              iconData: IconlyLight.lock,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ForgetPasswordPage(),
-                ),
-              ),
-              showTrailing: true,
-            ),
-            // theme
-            SwitchListTile(
-              title: const Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(IconlyLight.setting),
-                  SizedBox(width: 16),
-                  Text(
-                    'Theme',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-              onChanged: (bool value) {
-                themeState.setTheme = value;
-              },
-              activeColor: Colors.indigo,
-              value: themeState.getTheme,
-            ),
-            // log out
-            _listTile(
-              title: 'Log Out',
-              subTitle: null,
-              iconData: IconlyLight.logout,
-              onTap: showLogOutDialog,
-              showTrailing: false,
-            ),
-            if (Utils.checkHasLogin() == false)
+      body: CusLoadingWidget(
+        isLoading: isLoading,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // address
               _listTile(
-                title: 'Log In',
+                title: 'Address',
+                subTitle: userAddress,
+                iconData: IconlyLight.profile,
+                onTap: showUpdateAddressDialog,
+                showTrailing: true,
+              ),
+              // orders
+              _listTile(
+                title: 'Orders',
                 subTitle: null,
-                iconData: IconlyLight.login,
-                onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                )),
+                iconData: IconlyLight.wallet,
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return const OrderPage();
+                })),
+                showTrailing: true,
+              ),
+              // wishlist
+              _listTile(
+                title: 'Wishlist (${wishListProvider.wishItemsList.length})',
+                subTitle: null,
+                iconData: IconlyLight.heart,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return const WishlistPage();
+                  }),
+                ),
+                showTrailing: true,
+              ),
+              // viewed
+              _listTile(
+                title: 'Viewed',
+                subTitle: null,
+                iconData: IconlyLight.show,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ViewedPage(),
+                  ),
+                ),
+                showTrailing: true,
+              ),
+              // forget password
+              _listTile(
+                title: 'Forget Password',
+                subTitle: null,
+                iconData: IconlyLight.lock,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ForgetPasswordPage(),
+                  ),
+                ),
+                showTrailing: true,
+              ),
+              // theme
+              SwitchListTile(
+                title: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(IconlyLight.setting),
+                    SizedBox(width: 16),
+                    Text(
+                      'Theme',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                onChanged: (bool value) {
+                  themeState.setTheme = value;
+                },
+                activeColor: Colors.indigo,
+                value: themeState.getTheme,
+              ),
+              // log out
+              _listTile(
+                title: 'Log Out',
+                subTitle: null,
+                iconData: IconlyLight.logout,
+                onTap: showLogOutDialog,
                 showTrailing: false,
               ),
-          ],
+              if (Utils.checkHasLogin() == false)
+                _listTile(
+                  title: 'Log In',
+                  subTitle: null,
+                  iconData: IconlyLight.login,
+                  onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  )),
+                  showTrailing: false,
+                ),
+            ],
+          ),
         ),
       ),
     );

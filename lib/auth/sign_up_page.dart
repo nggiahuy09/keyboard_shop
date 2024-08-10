@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/auth/login_page.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_input_textfield.dart';
@@ -69,6 +71,26 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = false;
         });
+
+        // await storeInstance.collection(USERS).doc(userUid).set({
+        //   'id': userUid,
+        //   'name': username,
+        //   'email': email,
+        //   'shipping_address': address,
+        //   'wishlist': [],
+        //   'cart': [],
+        //   'time_create': Timestamp.now(),
+        // });
+
+        FirebaseService.setUserFireStoreData(
+          userUid: userUid,
+          userName: username,
+          email: email,
+          address: address,
+          wishlist: [],
+          cart: [],
+          lastModify: Timestamp.now(),
+        );
 
         if (mounted) {
           Navigator.of(context).pushReplacement(
