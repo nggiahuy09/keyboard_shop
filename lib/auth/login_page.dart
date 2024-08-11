@@ -52,11 +52,13 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       !email.contains('@') ? _isValidEmail = false : _isValidEmail = true;
       password.length < 8 ? _isValidPassword = false : _isValidPassword = true;
-
-      _isLoading = true;
     });
 
     if (_isValidPassword && _isValidEmail) {
+      setState(() {
+        _isLoading = true;
+      });
+
       try {
         await authInstance.signInWithEmailAndPassword(email: email, password: password);
 
