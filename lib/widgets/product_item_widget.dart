@@ -41,10 +41,10 @@ class _ProductItemWidget extends State<ProductItemWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
+              Image.network(
                 product.thumbnail,
-                // height: size.width * 0.42,
-                // width: double.infinity,
+                height: size.width * 0.42,
+                width: double.infinity,
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 8),

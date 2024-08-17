@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:keyboard_shop/auth/forget_password_page.dart';
 import 'package:keyboard_shop/auth/sign_up_page.dart';
 import 'package:keyboard_shop/pages/bottom_bar_page.dart';
+import 'package:keyboard_shop/pages/fetch_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_input_textfield.dart';
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const MyBottomBarPage()),
+            MaterialPageRoute(builder: (context) => const FetchScreen()),
           );
         }
 
@@ -109,9 +110,11 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (mounted) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const MyBottomBarPage(),
-        ));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const FetchScreen(),
+          ),
+        );
       }
     } on FirebaseAuthException catch (error) {
       if (mounted) {
@@ -241,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontSizeContent: 18,
                           onTap: () {
                             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => const MyBottomBarPage(),
+                              builder: (context) => const FetchScreen(),
                             ));
                           },
                         ),

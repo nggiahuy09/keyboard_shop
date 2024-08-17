@@ -38,7 +38,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           children: [
             Stack(
               children: [
-                Image.asset(
+                Image.network(
                   widget.product.thumbnail,
                   fit: BoxFit.fitWidth,
                 ),

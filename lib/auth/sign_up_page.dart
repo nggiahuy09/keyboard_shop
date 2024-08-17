@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/auth/login_page.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
+import 'package:keyboard_shop/pages/fetch_page.dart';
 import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_input_textfield.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_loading_widget.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
-
-import '../pages/bottom_bar_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -94,7 +93,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const MyBottomBarPage()),
+            MaterialPageRoute(
+              builder: (context) => const FetchScreen(),
+            ),
           );
         }
 
