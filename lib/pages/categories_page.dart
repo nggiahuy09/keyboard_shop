@@ -30,7 +30,10 @@ class MyCategoriesPage extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return ViewAllPage(title: category[index].name);
+                      return ViewAllPage(
+                        title: category[index].name,
+                        isCategoryPage: true,
+                      );
                     },
                   ),
                 );

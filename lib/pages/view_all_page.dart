@@ -25,8 +25,15 @@ class ViewAllPage extends StatefulWidget {
 
 class _ViewAllPageState extends State<ViewAllPage> {
   final TextEditingController _searchTextController = TextEditingController();
+  List<ProductModel> products = [];
 
   var isSearching = false;
+
+  @override
+  void initState() {
+    products = _getProducts(context);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -35,13 +42,13 @@ class _ViewAllPageState extends State<ViewAllPage> {
   }
 
   List<ProductModel> _getProducts(BuildContext context) {
-    final productsProvider = Provider.of<ProductsProvider>(context);
+    final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
 
     final products = widget.isCategoryPage
-        ? widget.isSalePage
+        ? productsProvider.findByCategory(widget.title)
+        : widget.isSalePage
             ? productsProvider.saleProducts
-            : productsProvider.products
-        : productsProvider.findByCategory(widget.title);
+            : productsProvider.products;
 
     return products;
   }
@@ -49,7 +56,6 @@ class _ViewAllPageState extends State<ViewAllPage> {
   @override
   Widget build(BuildContext context) {
     final screenSize = Utils(context).screenSize;
-    final products = _getProducts(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -79,6 +85,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                   onPressed: () {
                     setState(() {
                       _searchTextController.clear();
+                      products = _getProducts(context);
                     });
                   }),
         ],
@@ -86,7 +93,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
             ? TextField(
                 controller: _searchTextController,
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {
+                    products = Provider.of<ProductsProvider>(context, listen: false).findByName(value);
+                  });
                 },
                 onSubmitted: (value) {},
                 style: TextStyle(
@@ -111,9 +120,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
       ),
       // body: const EmptyPage(description: 'No Product Item on Sale',),
       body: products.isEmpty
-          ? const EmptyPage(
-              description: 'This category is empty',
-              type: ConstEmptyPage.CART,
+          ? EmptyPage(
+              description: widget.isCategoryPage ? 'No Products In This Category' : 'No Search Results',
+              type: ConstEmptyPage.ORDER,
             )
           : SingleChildScrollView(
               child: Column(

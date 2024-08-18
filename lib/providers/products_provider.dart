@@ -45,6 +45,10 @@ class ProductsProvider with ChangeNotifier {
     return _productsList.where((element) => element.category.toLowerCase() == category.toLowerCase()).toList();
   }
 
+  List<ProductModel> findByName(String name) {
+    return _productsList.where((element) => element.title.toLowerCase().contains(name.toLowerCase())).toList();
+  }
+
   double findPriceById(String id) {
     final product = _productsList.firstWhere((element) => element.id == id);
 

@@ -13,7 +13,7 @@ class FetchScreen extends StatefulWidget {
 class _FetchScreenState extends State<FetchScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(microseconds: 8)).then(
+    Future.delayed(const Duration(microseconds: 5)).then(
       (_) async {
         final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
         await productsProvider.fetchProducts();
