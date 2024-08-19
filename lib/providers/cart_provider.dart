@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/models/cart_model.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
@@ -21,7 +24,23 @@ class CartProvider with ChangeNotifier {
     return inList;
   }
 
-  void clearCart(BuildContext context)  {
+  CartModel? findByProductId({required String productId}) {
+    final itemsList = _cartItems.values.toList();
+
+    for (final item in itemsList) {
+      if (item.productId == productId) {
+        return CartModel(
+          id: item.id,
+          productId: item.productId,
+          quantity: item.quantity,
+        );
+      }
+    }
+
+    return null;
+  }
+
+  Future<void> clearCart(BuildContext context) async {
     if (_cartItems.isNotEmpty) {
       showDialog(
         context: context,
@@ -39,11 +58,15 @@ class CartProvider with ChangeNotifier {
               ),
             ),
             acceptOption: TextButton(
-              onPressed: () {
+              onPressed: () async {
                 _cartItems.clear();
+
+                await storeInstance.collection('users').doc(userUid).update({
+                  'cart': [],
+                });
+
                 notifyListeners();
                 Navigator.of(context).maybePop();
-
                 Utils.showToast(msg: 'Clear Cart Successfully');
               },
               child: const Text(
@@ -59,19 +82,77 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void addToCart({
-    required String productId,
-    required int quantity,
-  }) {
-    _cartItems.putIfAbsent(
-      productId,
-      () => CartModel(id: DateTime.now().toString(), productId: productId, quantity: quantity),
-    );
+  // todo: complete this function to update the quantity of product in cart on Firebase
+  Future<void> updateQuantity() async {
+    try {
 
-    notifyListeners();
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
   }
 
-  void deleteById(BuildContext context, String productId) async {
+  Future<void> removeOneItem({
+    required String cartId,
+    required String productId,
+    required int quantity,
+    required BuildContext context,
+  }) async {
+    try {
+      if (await deleteById(context, productId)) {
+        await storeInstance.collection('users').doc(userUid).update(
+          {
+            'cart': FieldValue.arrayRemove(
+              [
+                {
+                  'cartId': cartId,
+                  'productId': productId,
+                  'quantity': quantity.toString(),
+                },
+              ],
+            ),
+          },
+        );
+      } else {
+        Utils.showToast(msg: 'Delete Item Failed');
+      }
+
+      notifyListeners();
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+  }
+
+  Future<void> fetchCart() async {
+    try {
+      final DocumentSnapshot snapshot = await storeInstance.collection('users').doc(userUid).get();
+
+      if (!snapshot.exists) return;
+      final cartLength = snapshot.get('cart').length;
+
+      for (int i = 0; i < cartLength; i++) {
+        final String cartId = snapshot.get('cart')[i]['cartId'];
+        final String productId = snapshot.get('cart')[i]['productId'];
+        final int quantity = int.parse(snapshot.get('cart')[i]['quantity']);
+
+        _cartItems.putIfAbsent(
+          snapshot.get('cart')[i]['productId'],
+          () => CartModel(
+            id: cartId,
+            productId: productId,
+            quantity: quantity,
+          ),
+        );
+
+        notifyListeners();
+      }
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+  }
+
+  Future<bool> deleteById(BuildContext context, String productId) async {
+    bool deleteSuccess = false;
+
     await showDialog(
         context: context,
         builder: (context) {
@@ -82,6 +163,7 @@ class CartProvider with ChangeNotifier {
               onPressed: () {
                 _cartItems.removeWhere((key, value) => value.productId == productId);
                 Navigator.of(context).pop();
+                deleteSuccess = true;
               },
               child: const Text(
                 'Remove',
@@ -99,6 +181,7 @@ class CartProvider with ChangeNotifier {
     );
 
     notifyListeners();
+    return deleteSuccess;
   }
 
   void increaseQuantity(String productId) {
@@ -114,7 +197,7 @@ class CartProvider with ChangeNotifier {
     if (cartItem.quantity > 1) {
       cartItem.quantity--;
     } else {
-      // todo: show dialog can not decrease any more
+      Utils.showToast(msg: 'Can not Decrease Anymore');
     }
     notifyListeners();
   }

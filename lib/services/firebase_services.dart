@@ -5,6 +5,29 @@ import 'package:keyboard_shop/models/wishlist_model.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 
 class FirebaseService {
+  static Future<void> addToCart({
+    required String productId,
+    required int quantity,
+  }) async {
+    try {
+      await storeInstance.collection('users').doc(userUid).update(
+        {
+          'cart': FieldValue.arrayUnion([
+            {
+              'cartId': Timestamp.now().toString(),
+              'productId': productId,
+              'quantity': quantity.toString(),
+            }
+          ]),
+        },
+      );
+
+      Utils.showToast(msg: 'Add to Cart Successfully');
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+  }
+
   static Future<Map<String, dynamic>> getUserData() async {
     Map<String, dynamic> user = {};
 

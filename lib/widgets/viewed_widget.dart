@@ -3,6 +3,7 @@ import 'package:keyboard_shop/models/viewed_product_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:provider/provider.dart';
 
@@ -70,13 +71,17 @@ class _ViewedWidget extends State<ViewedWidget> {
                     CusMaterialIconButton(
                       width: 54,
                       icon: isInCart ? Icons.remove_shopping_cart_outlined : Icons.shopping_cart_outlined,
-                      onTap: () {
+                      onTap: () async {
                         if (isInCart) {
                           setState(() {
                             cartProvider.deleteById(context, product.id);
                           });
                         } else {
-                          cartProvider.addToCart(productId: product.id, quantity: 1);
+                          await FirebaseService.addToCart(
+                            productId: product.id,
+                            quantity: 1,
+                          );
+                          await cartProvider.fetchCart();
                         }
                       },
                       color: isInCart ? Colors.redAccent : Colors.indigo,

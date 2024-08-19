@@ -3,6 +3,7 @@ import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:provider/provider.dart';
 
@@ -87,10 +88,13 @@ class _WishlistWidget extends State<WishlistWidget> {
                       width: 54,
                       height: 36,
                       icon: Icons.shopping_bag_outlined,
-                      onTap: () => cartProvider.addToCart(
-                        productId: widget.productId,
-                        quantity: quantity,
-                      ),
+                      onTap: () async {
+                        await FirebaseService.addToCart(
+                          productId: widget.productId,
+                          quantity: quantity,
+                        );
+                        await cartProvider.fetchCart();
+                      },
                       color: Colors.indigo,
                     ),
                   ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/pages/bottom_bar_page.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:provider/provider.dart';
 
 class FetchScreen extends StatefulWidget {
@@ -17,6 +19,13 @@ class _FetchScreenState extends State<FetchScreen> {
       (_) async {
         final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
         await productsProvider.fetchProducts();
+
+        if (Utils.checkHasLogin()) {
+          if (mounted) {
+            final cartProvider = Provider.of<CartProvider>(context, listen: false);
+            await cartProvider.fetchCart();
+          }
+        }
 
         if (mounted) {
           Navigator.of(context).pushReplacement(

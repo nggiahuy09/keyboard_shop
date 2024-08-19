@@ -3,6 +3,7 @@ import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
@@ -149,8 +150,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     subContent: 'Free Shipping',
                     onTap: () async {
                       if (Utils.checkHasLogin()) {
-                        cartProvider.addToCart(productId: widget.product.id, quantity: quantity);
-                        Utils.showToast(msg: 'Add to Cart Successfully');
+                        await FirebaseService.addToCart(
+                          productId: widget.product.id,
+                          quantity: quantity,
+                        );
+                        await cartProvider.fetchCart();
                       } else {
                         Utils.showToast(msg: 'Please Login to continue...');
                       }

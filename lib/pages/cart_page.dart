@@ -48,7 +48,7 @@ class _MyCartPageState extends State<MyCartPage> {
               description: 'Your Cart is Empty!!!\nGo Shopping Now',
             )
           : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Row(
@@ -75,7 +75,7 @@ class _MyCartPageState extends State<MyCartPage> {
                       itemCount: myCart.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
                           child: ChangeNotifierProvider.value(
                             value: myCart[index],
                             child: CartWidget(cartItem: myCart[index]),

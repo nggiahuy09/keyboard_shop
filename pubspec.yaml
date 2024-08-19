@@ -50,6 +50,8 @@ dependencies:
   google_sign_in: ^6.2.1
   #flutter toast
   fluttertoast: ^8.2.6
+  #Uuid
+  uuid: ^4.4.2
 
 dev_dependencies:
   flutter_test:
