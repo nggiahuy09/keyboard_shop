@@ -8,6 +8,8 @@ class ViewedProductProvider with ChangeNotifier {
 
   List<ViewedProductModel> get viewedListItems => _viewedProducts.values.toList();
 
+  void clearLocalData() => _viewedProducts.clear();
+
   void clearViewedList(BuildContext context) {
     if (_viewedProducts.isNotEmpty) {
       showDialog(

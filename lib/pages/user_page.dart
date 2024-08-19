@@ -144,6 +144,7 @@ class _MyUserPageState extends State<MyUserPage> {
                   await authInstance.signOut();
 
                   if (mounted) {
+                    Utils.deleteAllLocalData(context);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const LoginPage(),
@@ -284,8 +285,6 @@ class _MyUserPageState extends State<MyUserPage> {
                   subTitle: null,
                   iconData: IconlyLight.login,
                   onTap: () {
-                    authInstance.signOut();
-
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const LoginPage(),

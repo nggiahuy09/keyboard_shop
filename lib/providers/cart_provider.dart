@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/models/cart_model.dart';
@@ -9,7 +8,7 @@ import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 
 class CartProvider with ChangeNotifier {
   Map<String, CartModel> get cartItems => _cartItems;
-
+  
   bool isInCartList(String id) {
     final itemsList = _cartItems.values.toList();
     bool inList = false;

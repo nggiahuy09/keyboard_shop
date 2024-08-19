@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
+import 'package:keyboard_shop/providers/cart_provider.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/providers/viewed_products_provider.dart';
+import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:provider/provider.dart';
 
 class Utils {
   BuildContext context;
@@ -41,5 +46,15 @@ class Utils {
       textColor: textColor,
       fontSize: fontSize,
     );
+  }
+
+  static void deleteAllLocalData(BuildContext context) {
+    final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+    final wishlistProvider = Provider.of<WishlistProvider>(context, listen: false);
+    final historyProvider = Provider.of<ViewedProductProvider>(context, listen: false);
+
+    productsProvider.clearLocalData();
+    wishlistProvider.clearLocalData();
+    historyProvider.clearLocalData();
   }
 }

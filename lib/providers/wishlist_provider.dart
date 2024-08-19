@@ -7,8 +7,9 @@ class WishlistProvider with ChangeNotifier {
   final Map<String, WishlistModel> _wishItems = {};
 
   Map<String, WishlistModel> get wishItems => _wishItems;
-
   List<WishlistModel> get wishItemsList => _wishItems.values.toList();
+
+  void clearLocalData() => _wishItems.clear();
 
   bool isInWishlist(String id) {
     final itemsList = _wishItems.values.toList();

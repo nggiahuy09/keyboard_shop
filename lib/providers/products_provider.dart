@@ -9,6 +9,8 @@ import 'package:keyboard_shop/models/product_model.dart';
 class ProductsProvider with ChangeNotifier {
   static final List<ProductModel> _productsList = [];
 
+  void clearLocalData() => _productsList.clear();
+
   Future<void> fetchProducts() async {
     await storeInstance.collection('products').get().then((QuerySnapshot snapshot) {
       for (var element in snapshot.docs) {
