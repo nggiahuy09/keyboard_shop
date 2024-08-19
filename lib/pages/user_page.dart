@@ -144,9 +144,11 @@ class _MyUserPageState extends State<MyUserPage> {
                   await authInstance.signOut();
 
                   if (mounted) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ));
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
                   }
                 } on FirebaseAuthException catch (err) {
                   if (mounted) {
@@ -281,9 +283,15 @@ class _MyUserPageState extends State<MyUserPage> {
                   title: 'Log In',
                   subTitle: null,
                   iconData: IconlyLight.login,
-                  onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  )),
+                  onTap: () {
+                    authInstance.signOut();
+
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
                   showTrailing: false,
                 ),
             ],
