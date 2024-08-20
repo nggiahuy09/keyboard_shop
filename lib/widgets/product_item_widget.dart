@@ -3,6 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:keyboard_shop/models/product_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:provider/provider.dart';
 
@@ -95,10 +96,21 @@ class _ProductItemWidget extends State<ProductItemWidget> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (Utils.checkHasLogin()) {
-                        isInWishList ? wishListProvider.deleteById(context, product.id) : wishListProvider.addToWishlist(productId: product.id);
-                        Utils.showToast(msg: 'Add to Wishlist Successfully');
+                        if (isInWishList) {
+                          if (await FirebaseService.removeFromWishlist(productId: product.id)) {
+                            Utils.showToast(msg: 'Remove from Wishlist Successfully');
+                          }
+
+                          wishListProvider.deleteById(context, product.id);
+                          await wishListProvider.fetchWishlist();
+                        } else {
+                          if (await FirebaseService.addToWishlist(productId: product.id)) {
+                            Utils.showToast(msg: 'Add to Wishlist Successfully');
+                          }
+                          await wishListProvider.fetchWishlist();
+                        }
                       } else {
                         Utils.showToast(msg: 'Please Login to continue...');
                       }

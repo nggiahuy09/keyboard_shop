@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/models/wishlist_model.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
@@ -23,6 +25,31 @@ class WishlistProvider with ChangeNotifier {
     }
 
     return inList;
+  }
+
+  Future<void> fetchWishlist() async {
+    try {
+      final DocumentSnapshot snapshot = await storeInstance.collection('users').doc(userUid).get();
+
+      if (!snapshot.exists) return;
+      final wishlistLength = snapshot.get('wishlist').length;
+
+      for (int i = 0; i < wishlistLength; i++) {
+        final String productId = snapshot.get('wishlist')[i]['productId'];
+
+        _wishItems.putIfAbsent(
+          snapshot.get('wishlist')[i]['productId'],
+          () => WishlistModel(
+            id: Timestamp.now().toString(),
+            productId: productId,
+          ),
+        );
+
+        notifyListeners();
+      }
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
   }
 
   void clearWishlist(BuildContext context) {

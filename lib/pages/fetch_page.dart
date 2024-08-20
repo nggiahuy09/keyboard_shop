@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_shop/pages/bottom_bar_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,10 @@ class _FetchScreenState extends State<FetchScreen> {
         if (Utils.checkHasLogin()) {
           if (mounted) {
             final cartProvider = Provider.of<CartProvider>(context, listen: false);
+            final wishlistProvider = Provider.of<WishlistProvider>(context, listen: false);
+
             await cartProvider.fetchCart();
+            await wishlistProvider.fetchWishlist();
           }
         }
 

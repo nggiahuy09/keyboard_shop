@@ -43,7 +43,7 @@ class _WishlistWidget extends State<WishlistWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          Image.network(
             product.thumbnail,
             width: 120,
             height: 120,

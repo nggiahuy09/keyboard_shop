@@ -5,6 +5,52 @@ import 'package:keyboard_shop/models/wishlist_model.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 
 class FirebaseService {
+  static Future<bool> removeFromWishlist({
+    required String productId,
+  }) async {
+    try {
+      await storeInstance.collection('users').doc(userUid).update(
+        {
+          'wishlist': FieldValue.arrayRemove(
+            [
+              {
+                'productId': productId,
+              },
+            ],
+          ),
+        },
+      );
+
+      return true;
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+
+    return false;
+  }
+
+  static Future<bool> addToWishlist({
+    required String productId,
+  }) async {
+    try {
+      await storeInstance.collection('users').doc(userUid).update(
+        {
+          'wishlist': FieldValue.arrayUnion([
+            {
+              'productId': productId,
+            }
+          ]),
+        },
+      );
+
+      return true;
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+
+    return false;
+  }
+
   static Future<void> addToCart({
     required String productId,
     required int quantity,

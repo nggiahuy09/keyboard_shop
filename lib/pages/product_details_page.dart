@@ -163,9 +163,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   const SizedBox(height: 8),
                   CusMaterialButtonAccent(
                     content: 'Add to Wishlist',
-                    onTap: () {
+                    onTap: () async {
                       if (Utils.checkHasLogin()) {
-                        wishlistProvider.addToWishlist(productId: widget.product.id);
+                        await FirebaseService.addToWishlist(productId: widget.product.id);
+                        await wishlistProvider.fetchWishlist();
+
                         Utils.showToast(msg: 'Add to Wishlist Successfully');
                       } else {
                         Utils.showToast(msg: 'Please Login to continue...');
