@@ -90,37 +90,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<void> removeOneItem({
-    required String cartId,
-    required String productId,
-    required int quantity,
-    required BuildContext context,
-  }) async {
-    try {
-      if (await deleteById(context, productId)) {
-        await storeInstance.collection('users').doc(userUid).update(
-          {
-            'cart': FieldValue.arrayRemove(
-              [
-                {
-                  'cartId': cartId,
-                  'productId': productId,
-                  'quantity': quantity.toString(),
-                },
-              ],
-            ),
-          },
-        );
-      } else {
-        Utils.showToast(msg: 'Delete Item Failed');
-      }
-
-      notifyListeners();
-    } catch (err) {
-      Utils.showToast(msg: err.toString());
-    }
-  }
-
   Future<void> fetchCart() async {
     try {
       final DocumentSnapshot snapshot = await storeInstance.collection('users').doc(userUid).get();
@@ -149,29 +118,26 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> deleteById(BuildContext context, String productId) async {
-    bool deleteSuccess = false;
-
+  Future<void> deleteById(BuildContext context, String productId) async {
     await showDialog(
-        context: context,
-        builder: (context) {
-          return CusConfirmationDialog(
-            title: 'Confirmation',
-            content: 'Are you sure to remove this product?',
-            acceptOption: TextButton(
-              onPressed: () {
-                _cartItems.removeWhere((key, value) => value.productId == productId);
-                Navigator.of(context).pop();
-                deleteSuccess = true;
-              },
-              child: const Text(
-                'Remove',
-                style: TextStyle(color: Colors.red),
-              ),
+      context: context,
+      builder: (context) {
+        return CusConfirmationDialog(
+          title: 'Confirmation',
+          content: 'Are you sure to remove this product?',
+          acceptOption: TextButton(
+            onPressed: () {
+              _cartItems.removeWhere((key, value) => value.productId == productId);
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'Remove',
+              style: TextStyle(color: Colors.red),
             ),
-            denyOption: TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
+          ),
+          denyOption: TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
               'Cancel',
             ),
           ),
@@ -180,7 +146,6 @@ class CartProvider with ChangeNotifier {
     );
 
     notifyListeners();
-    return deleteSuccess;
   }
 
   void increaseQuantity(String productId) {

@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/models/cart_model.dart';
 import 'package:keyboard_shop/pages/product_details_page.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_quantity.dart';
 import 'package:provider/provider.dart';
@@ -101,12 +103,13 @@ class _CartWidgetState extends State<CartWidget> {
                           );
 
                           if (cartProduct != null) {
-                            await cartProvider.removeOneItem(
-                              context: context,
+                            if (await FirebaseService.removeFromCartList(
                               cartId: cartProduct.id,
                               productId: cartProduct.productId,
                               quantity: cartProduct.quantity,
-                            );
+                            )) {
+                              cartProvider.deleteById(context, cartProduct.productId);
+                            }
                           } else {
                             Utils.showToast(msg: 'Something went wrong when removing product');
                           }

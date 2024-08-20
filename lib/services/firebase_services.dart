@@ -29,6 +29,34 @@ class FirebaseService {
     return false;
   }
 
+  static Future<bool> removeFromCartList({
+    required String cartId,
+    required String productId,
+    required int quantity,
+  }) async {
+    try {
+      await storeInstance.collection('users').doc(userUid).update(
+        {
+          'cart': FieldValue.arrayRemove(
+            [
+              {
+                'cartId': cartId,
+                'productId': productId,
+                'quantity': quantity.toString(),
+              },
+            ],
+          ),
+        },
+      );
+
+      return true;
+    } catch (err) {
+      Utils.showToast(msg: err.toString());
+    }
+
+    return false;
+  }
+
   static Future<bool> addToWishlist({
     required String productId,
   }) async {
