@@ -4,6 +4,7 @@ import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/services/firebase_services.dart';
+import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_material_button.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +81,14 @@ class _WishlistWidget extends State<WishlistWidget> {
                       width: 54,
                       height: 36,
                       icon: Icons.delete_outline,
-                      onTap: () => wishlistProvider.deleteById(context, widget.productId),
+                      onTap: () async {
+                        if (await FirebaseService.removeFromWishlist(productId: widget.productId)) {
+                          Utils.showToast(msg: 'Remove from Wishlist Successfully');
+
+                          wishlistProvider.deleteById(context, widget.productId);
+                          await wishlistProvider.fetchWishlist();
+                        }
+                      },
                       color: Colors.red,
                     ),
                     const SizedBox(width: 12),
@@ -94,6 +102,8 @@ class _WishlistWidget extends State<WishlistWidget> {
                           quantity: quantity,
                         );
                         await cartProvider.fetchCart();
+
+                        Utils.showToast(msg: 'Add to Cart Successfully');
                       },
                       color: Colors.indigo,
                     ),

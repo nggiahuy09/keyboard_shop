@@ -52,7 +52,7 @@ class WishlistProvider with ChangeNotifier {
     }
   }
 
-  void clearWishlist(BuildContext context) {
+  Future<void> clearWishlist(BuildContext context) async{
     if (_wishItems.isNotEmpty) {
       showDialog(
         context: context,
@@ -70,8 +70,13 @@ class WishlistProvider with ChangeNotifier {
               ),
             ),
             acceptOption: TextButton(
-              onPressed: () {
+              onPressed: () async {
                 _wishItems.clear();
+
+                await storeInstance.collection('users').doc(userUid).update({
+                  'wishlist': [],
+                });
+
                 notifyListeners();
                 Navigator.of(context).maybePop();
 
