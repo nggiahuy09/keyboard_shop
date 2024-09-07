@@ -67,6 +67,10 @@ class _SignUpPageState extends State<SignUpPage> {
       try {
         await authInstance.createUserWithEmailAndPassword(email: email, password: password);
 
+        final User? user = authInstance.currentUser;
+        user!.updateDisplayName(username);
+        user.reload();
+
         setState(() {
           _isLoading = false;
         });
