@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
@@ -8,7 +10,7 @@ import 'package:keyboard_shop/widgets/custom_widget/cus_dialog_widget.dart';
 
 class CartProvider with ChangeNotifier {
   Map<String, CartModel> get cartItems => _cartItems;
-  
+
   bool isInCartList(String id) {
     final itemsList = _cartItems.values.toList();
     bool inList = false;
@@ -39,53 +41,63 @@ class CartProvider with ChangeNotifier {
     return null;
   }
 
-  Future<void> clearCart(BuildContext context) async {
+  Future<void> clearCart(BuildContext context, {bool usingDialog = true}) async {
+    log('cart length: ${_cartItems.length}');
+
     if (_cartItems.isNotEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return CusConfirmationDialog(
-            title: 'Confirmation',
-            content: 'Do you want to clear your cart',
-            denyOption: TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.indigo,
+      if (usingDialog == false) {
+        _cartItems.clear();
+
+        await storeInstance.collection('users').doc(userUid).update({
+          'cart': [],
+        });
+
+        notifyListeners();
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return CusConfirmationDialog(
+              title: 'Confirmation',
+              content: 'Do you want to clear your cart',
+              denyOption: TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                  ),
                 ),
               ),
-            ),
-            acceptOption: TextButton(
-              onPressed: () async {
-                _cartItems.clear();
+              acceptOption: TextButton(
+                onPressed: () async {
+                  _cartItems.clear();
 
-                await storeInstance.collection('users').doc(userUid).update({
-                  'cart': [],
-                });
+                  await storeInstance.collection('users').doc(userUid).update({
+                    'cart': [],
+                  });
 
-                notifyListeners();
-                Navigator.of(context).maybePop();
-                Utils.showToast(msg: 'Clear Cart Successfully');
-              },
-              child: const Text(
-                'Clear',
-                style: TextStyle(
-                  color: Colors.red,
+                  notifyListeners();
+                  Navigator.of(context).maybePop();
+                  Utils.showToast(msg: 'Clear Cart Successfully');
+                },
+                child: const Text(
+                  'Clear',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      );
+            );
+          },
+        );
+      }
     }
   }
 
-  // todo: complete this function to update the quantity of product in cart on Firebase
+// todo: complete this function to update the quantity of product in cart on Firebase
   Future<void> updateQuantity() async {
-    try {
-
-    } catch (err) {
+    try {} catch (err) {
       Utils.showToast(msg: err.toString());
     }
   }

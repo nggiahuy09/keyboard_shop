@@ -5,7 +5,8 @@ import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/consts/theme_data.dart';
 import 'package:keyboard_shop/auth/login_page.dart';
 import 'package:keyboard_shop/pages/fetch_page.dart';
-import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/providers/order_provider.dart';
+import 'package:keyboard_shop/providers/theme_provider.dart';
 import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/providers/viewed_products_provider.dart';
@@ -81,6 +82,9 @@ class _MyAppState extends State<MyApp> {
               ),
               ChangeNotifierProvider(
                 create: (_) => ViewedProductProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => OrderProvider(),
               ),
             ],
             child: Consumer<ThemeProvider>(

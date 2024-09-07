@@ -8,7 +8,7 @@ import 'package:keyboard_shop/consts/firebase_const.dart';
 import 'package:keyboard_shop/pages/order_page.dart';
 import 'package:keyboard_shop/pages/viewed_page.dart';
 import 'package:keyboard_shop/pages/wishlist_page.dart';
-import 'package:keyboard_shop/provider/theme_provider.dart';
+import 'package:keyboard_shop/providers/theme_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';
 import 'package:keyboard_shop/services/firebase_services.dart';
 import 'package:keyboard_shop/services/utilities.dart';

@@ -1,50 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_shop/providers/order_provider.dart';
+import 'package:keyboard_shop/providers/products_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderWidget extends StatelessWidget {
-  const OrderWidget({super.key});
+  const OrderWidget({
+    super.key,
+    required this.orderId,
+  });
+
+  final String orderId;
 
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrderProvider>(context);
+    final productProvider = Provider.of<ProductsProvider>(context);
+
+    final order = orderProvider.findById(orderId: orderId);
+    final product = productProvider.findById(order.productId);
+
+    final String orderDate = '${order.orderDate.toDate().day}/${order.orderDate.toDate().month}/${order.orderDate.toDate().year}';
     return GestureDetector(
       onTap: () {},
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            'assets/images/keycap.jpg',
+          Image.network(
+            order.imageUrl,
             width: 100,
             height: 100,
           ),
           const SizedBox(width: 8),
-          const Flexible(
+          Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Ten san phammmmmmmmmmmmmm',
+                  product.title,
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  'Gia don hang',
-                  style: TextStyle(
+                  order.price,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      '07/03/2024',
-                      style: TextStyle(
+                      orderDate,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
