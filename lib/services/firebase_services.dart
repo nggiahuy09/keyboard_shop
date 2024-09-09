@@ -116,7 +116,7 @@ class FirebaseService {
       user.addAll({'email': userDoc.get('email')});
       user.addAll({'shipping_address': userDoc.get('shipping_address')});
       user.addAll({'wishlist': userDoc.get('wishlist')});
-      user.addAll({'last_modify': userDoc.get('last_modify')});
+      user.addAll({'last_modify': userDoc.get('time_create')});
     } catch (err) {
       Utils.showToast(msg: err.toString());
     }
