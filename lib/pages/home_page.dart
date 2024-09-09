@@ -53,39 +53,63 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            sectionWidget(
-              context,
-              title: 'For You',
-              viewAll: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ViewAllPage(
+            saleProducts.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: sectionWidget(
+                      context,
                       title: 'For You',
-                      isSalePage: true,
+                      viewAll: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ViewAllPage(
+                              title: 'For You',
+                              isSalePage: true,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlueAccent.shade700,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: const Center(
+                        child: Text(
+                          'There are no products on sale for you.',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 4),
-            Container(
-              padding: const EdgeInsets.only(left: 8),
-              height: screenSize.height * 0.34,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: saleProducts.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ChangeNotifierProvider.value(
-                      value: saleProducts[index],
-                      child: const ProductItemWidget(),
-                    ),
-                  );
-                },
+            if (saleProducts.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.only(left: 8),
+                height: screenSize.height * 0.34,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: saleProducts.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ChangeNotifierProvider.value(
+                        value: saleProducts[index],
+                        child: const ProductItemWidget(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
             const SizedBox(height: 12),
             sectionWidget(
               context,
