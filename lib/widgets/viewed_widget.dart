@@ -36,7 +36,7 @@ class _ViewedWidget extends State<ViewedWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          Image.network(
             product.thumbnail,
             width: 100,
             height: 100,
