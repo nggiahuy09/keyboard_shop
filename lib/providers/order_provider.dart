@@ -42,7 +42,14 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<void> fetchOrders() async {
-    await storeInstance.collection('orders').get().then((QuerySnapshot orderSnapshot) {
+    await storeInstance
+        .collection('orders')
+        .where(
+          'userId',
+          isEqualTo: userUid,
+        )
+        .get()
+        .then((QuerySnapshot orderSnapshot) {
       _orderList = [];
 
       for (var element in orderSnapshot.docs) {
