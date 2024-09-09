@@ -83,7 +83,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Price:',
+                          'Price (\$):',
                           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         Text(
@@ -173,6 +173,27 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Utils.showToast(msg: 'Please Login to continue...');
                       }
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Product Information:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4.0),
+                          child: Text(
+                            widget.product.productInfo,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
