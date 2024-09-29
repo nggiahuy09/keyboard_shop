@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:keyboard_shop/auth/forget_password_page.dart';
 import 'package:keyboard_shop/auth/sign_up_page.dart';
-import 'package:keyboard_shop/pages/bottom_bar_page.dart';
 import 'package:keyboard_shop/pages/fetch_page.dart';
 import 'package:keyboard_shop/services/utilities.dart';
 import 'package:keyboard_shop/widgets/custom_widget/cus_error_text.dart';

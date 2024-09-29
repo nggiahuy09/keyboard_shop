@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
-import 'package:keyboard_shop/providers/cart_provider.dart';
 import 'package:keyboard_shop/providers/products_provider.dart';
 import 'package:keyboard_shop/providers/viewed_products_provider.dart';
 import 'package:keyboard_shop/providers/wishlist_provider.dart';

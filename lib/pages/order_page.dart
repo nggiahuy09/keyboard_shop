@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/empty_screen_data.dart';
-import 'package:keyboard_shop/models/order_model.dart';
 import 'package:keyboard_shop/pages/empty_page.dart';
 import 'package:keyboard_shop/providers/order_provider.dart';
 import 'package:keyboard_shop/widgets/order_widget.dart';
