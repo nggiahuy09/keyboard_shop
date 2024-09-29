@@ -58,7 +58,7 @@ class _MyCartPageState extends State<MyCartPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total: ${totalPrice.toString()}',
+                        'Total: ${totalPrice.toStringAsFixed(3)}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
