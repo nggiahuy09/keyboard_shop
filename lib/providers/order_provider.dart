@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_shop/consts/firebase_const.dart';
@@ -30,7 +28,7 @@ class OrderProvider with ChangeNotifier {
         'userId': userUid,
         'userName': user != null ? user!.displayName : '',
         'productId': productId,
-        'price': productPrice * quantity,
+        'price': productPrice,
         'quantity': quantity,
         'imageUrl': imageUrl,
         'totalPrice': totalPrice,
@@ -64,6 +62,7 @@ class OrderProvider with ChangeNotifier {
             imageUrl: element.get('imageUrl'),
             quantity: element.get('quantity').toString(),
             orderDate: element.get('orderDate'),
+            totalPrice: element.get('totalPrice'),
           ),
         );
       }

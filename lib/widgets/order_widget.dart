@@ -47,7 +47,7 @@ class OrderWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  order.price,
+                  order.totalPrice,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OrderModel with ChangeNotifier {
-  final String orderId, userId, productId, userName, price, imageUrl, quantity;
+  final String orderId, userId, productId, userName, price, imageUrl, quantity, totalPrice;
   final Timestamp orderDate;
 
   OrderModel({
@@ -14,5 +14,6 @@ class OrderModel with ChangeNotifier {
     required this.imageUrl,
     required this.quantity,
     required this.orderDate,
+    required this.totalPrice,
   });
 }
